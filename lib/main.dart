@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/weather.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
@@ -30,13 +31,38 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  List<Weather> myList = [];
+  String _myText = "Hello";
+
+  Future<List<Weather>> _getListItems() async {
+    Uri url = Uri.parse('https://api.openweathermap.org/data/2.5/onecall?lat=46.8&lon=-92.1&exclude=hourly,current,minutely,alerts&units=imperial&appid=b15632ec4a9f1a874aeb15b3e22c4503');
+    http.Response response = await http.get(url);
+    if (response.statusCode == 200) {
+      List<Weather> newUsers = userFromJson(response.body);
+      return newUsers;
+    } else {
+      print("HTTP Error with code ${response.statusCode}");
+      return myList;
+    }
+  }
+
   Widget weatherTile (int position) {
     print ("Inside weatherTile and setting up tile for positon ${position}");
     return ListTile(
       leading: Image(image: AssetImage('graphics/sun.png')),
-      title: Text("Title Here"),
+      title: Text("Weather API/ JSON"),
       subtitle: Text("Subtitle Jere"),
     );
+  }
+
+  @override
+  initState() {
+    super.initState();
+    _getListItems().then((newWeatherData) {
+      setState(() {
+        myList = newWeatherData;
+      });
+    });
   }
 
   @override
@@ -46,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: ListView.builder(
-        itemCount: 4,
+        itemCount: 7,
         itemBuilder: (BuildContext context, int position) {
           return Card(
               child: weatherTile(position),
