@@ -48,11 +48,63 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget weatherTile (int position) {
     print ("Inside weatherTile and setting up tile for positon ${position}");
+    var daily;
     return ListTile(
-      leading: Image(image: AssetImage('graphics/sun.png')),
+      leading: Image(image: weatherImage(daily.weather[0].main)),
       title: Text("Weather API/ JSON"),
       subtitle: Text("Subtitle Jere"),
     );
+  }
+
+  weatherImage(String imageName) {
+
+    switch(imageName) {
+      case "sunny": {
+        imageName = "graphics/sun.png";
+      }
+      break;
+
+      case "cloudy": {
+        imageName = "graphics/cloud.png";
+      }
+      break;
+
+      case "drizzle": {
+        imageName = "graphics/drizzle.png";
+      }
+      break;
+
+      case "fog": {
+        imageName = "graphics/fog.png";
+      }
+      break;
+
+      case "light rain": {
+        imageName = "graphics/light_rain.png";
+      }
+      break;
+
+      case "partial clouds": {
+        imageName = "graphics/partial_cloud.png";
+      }
+      break;
+
+      case "rain": {
+        imageName = "graphics/rain.png";
+      }
+      break;
+
+      case "snow": {
+        imageName = "graphics/snow.png";
+      }
+      break;
+
+      default: {
+        imageName = "graphics/sun.png";
+      }
+      break;
+    }
+
   }
 
   @override
